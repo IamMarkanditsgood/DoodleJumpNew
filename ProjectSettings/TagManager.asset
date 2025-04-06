@@ -4,10 +4,7 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - Obstacle
-  - Bottom
-  - Coin
-  - Walls
+  - Platform
   layers:
   - Default
   - TransparentFX
