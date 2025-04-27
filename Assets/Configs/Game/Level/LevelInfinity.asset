@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f85259c0f616b64ba8e6354b9fbb082, type: 3}
+  m_Name: LevelInfinity
+  m_EditorClassIdentifier: 
+  _playerConfig: {fileID: 11400000, guid: 18a535e496018a14f8c3dcb027028078, type: 2}
+  _cameraConfig: {fileID: 11400000, guid: 0216805fc60414c438c9705e20c5edf2, type: 2}
+  _platformPrefab: {fileID: 4351005948386676007, guid: 45e583de93dfe994a962557975d9f07e,
+    type: 3}
+  _cameraPrefab: {fileID: 3897284644736826946, guid: 3d810099f01dcc74bb1bb230c1fbe1d3,
+    type: 3}
+  _playerPref: {fileID: 3214979398145905463, guid: ce3bda85d1eefc74696af0d96c08adb7,
+    type: 3}
+  _spawnIntervalTimer: 1
+  _platformsPerRow: 2
+  _rowSpacing: 3
+  _minDistanceBetweenPlatformsX: 1.2
+  _maxSpawnHeightAbovePlayer: 20
+  _useManualXBounds: 0
+  _manualMinX: -5
+  _manualMaxX: 5
+  _xSpacing: 1.345
