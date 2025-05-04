@@ -14,18 +14,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _playerConfig: {fileID: 11400000, guid: 18a535e496018a14f8c3dcb027028078, type: 2}
   _cameraConfig: {fileID: 11400000, guid: 0216805fc60414c438c9705e20c5edf2, type: 2}
-  _platformPrefab: {fileID: 4351005948386676007, guid: 45e583de93dfe994a962557975d9f07e,
-    type: 3}
+  _platformPrefabs:
+  - {fileID: 1952259838136634242, guid: 45e583de93dfe994a962557975d9f07e, type: 3}
   _cameraPrefab: {fileID: 3897284644736826946, guid: 3d810099f01dcc74bb1bb230c1fbe1d3,
     type: 3}
   _playerPref: {fileID: 3214979398145905463, guid: ce3bda85d1eefc74696af0d96c08adb7,
     type: 3}
-  _spawnIntervalTimer: 1
-  _platformsPerRow: 2
-  _rowSpacing: 3
-  _minDistanceBetweenPlatformsX: 1.2
-  _maxSpawnHeightAbovePlayer: 20
+  _objectGarbageCollectorInterval: 15
+  _objectCleanupDistanceToPlayer: 30
+  _spawnIntervalTimer: 0.5
+  _maxPlatformsPerRow: 3
+  _rowSpacing: 4
+  _minDistanceBetweenPlatformsX: 3
+  _maxSpawnHeightAbovePlayer: 25
   _useManualXBounds: 0
   _manualMinX: -5
   _manualMaxX: 5
-  _xSpacing: 1.345
+  _xSpacing: 2

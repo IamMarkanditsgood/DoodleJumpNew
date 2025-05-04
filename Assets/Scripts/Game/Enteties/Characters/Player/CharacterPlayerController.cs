@@ -5,7 +5,7 @@ using UnityEngine;
 public class CharacterPlayerController : MonoBehaviour
 {
     [SerializeField] private Camera _mainCamera;
-    [SerializeField] private CharacterMovementEngine _movementEngine;
+    [SerializeField] private CharacterMovementManager _movementEngine;
     [SerializeField] private PlayerInputSystem _playerInputSystem;
 
     private CharacterPlayerConfig _playerConfig;
@@ -50,7 +50,7 @@ public class CharacterPlayerController : MonoBehaviour
         HandleScreenWrapping();
         CheckFallDeath();
 
-        _movementEngine.CheckGroundStatus(_playerConfig.GroundCheckOffset);
+        _movementEngine.CheckGroundStatus(_playerConfig.GroundNormalThreshold);
     }
 
     private void FixedUpdate()
@@ -62,7 +62,7 @@ public class CharacterPlayerController : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D collision)
     {
         _movementEngine.HandleCollision(collision,
-            _playerConfig.GroundCheckOffset,
+            _playerConfig.GroundNormalThreshold,
             _playerConfig.JumpForce);
     }
 
@@ -98,78 +98,5 @@ public class CharacterPlayerController : MonoBehaviour
     {
         Debug.Log("Player Died!");
         Time.timeScale = 0;
-    }
-}
-/// <summary>
-/// Handles all movement physics and calculations
-/// Doesn't contain input logic, only applies movement forces
-/// </summary>
-[System.Serializable]
-public class CharacterMovementEngine
-{
-    [Header("Dependencies")]
-    [SerializeField] private Rigidbody2D _rigidbody;
-    [SerializeField] private Collider2D _collider;
-
-    private float _horizontalInput;
-    private bool _isGrounded;
-
-    public void Initialize(Rigidbody2D rb, Collider2D collider)
-    {
-        _rigidbody = rb;
-        _collider = collider;
-    }
-
-    /// <summary>
-    /// Applies horizontal movement based on input
-    /// Should be called in FixedUpdate
-    /// </summary>
-    public void Move(float horizontalInput, float moveSpeed)
-    {
-        _horizontalInput = horizontalInput;
-
-        _rigidbody.velocity = new Vector2(
-            _horizontalInput * moveSpeed,
-            _rigidbody.velocity.y
-        );
-    }
-
-    public void CheckGroundStatus(float groundCheckOffset)
-    {
-        var bounds = _collider.bounds;
-        var rayStart = new Vector2(bounds.center.x, bounds.min.y);
-        var rayLength = groundCheckOffset;
-
-        var hit = Physics2D.Raycast(rayStart, Vector2.down, rayLength);
-        _isGrounded = hit.collider != null && hit.collider.CompareTag("Platform");
-    }
-
-    public void HandleCollision(Collision2D collision, float groundCheckOffset, float jumpForce)
-    {
-        if (!collision.gameObject.CompareTag("Platform")) return;
-
-        if (IsCollisionBelow(collision, groundCheckOffset))
-        {
-            Jump(jumpForce);
-        }
-    }
-
-    private bool IsCollisionBelow(Collision2D collision, float tolerance)
-    {
-        float playerBottom = _collider.bounds.min.y;
-        float platformTop = collision.collider.bounds.max.y;
-        return playerBottom <= platformTop + tolerance;
-    }
-
-    /// <summary>
-    /// Makes character jump if grounded
-    /// </summary>
-    private void Jump(float jumpForce)
-    {
-        _rigidbody.velocity = new Vector2(
-            _rigidbody.velocity.x,
-            jumpForce
-        );
-        _isGrounded = false;
     }
 }
