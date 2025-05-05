@@ -14,8 +14,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _playerConfig: {fileID: 11400000, guid: 18a535e496018a14f8c3dcb027028078, type: 2}
   _cameraConfig: {fileID: 11400000, guid: 0216805fc60414c438c9705e20c5edf2, type: 2}
+  _platformConfigs:
+  - {fileID: 11400000, guid: b94d95f7c292fea40bf2617cf1a642c5, type: 2}
+  - {fileID: 11400000, guid: a7583ad3b490f8e4db6d03b6435b142e, type: 2}
+  - {fileID: 11400000, guid: a135f41153860c3409c32a01a4836ce4, type: 2}
+  _enemyConfigs:
+  - {fileID: 11400000, guid: 4508e475e0a1998408f310b91ed33ebc, type: 2}
+  - {fileID: 11400000, guid: 11b0b7402c1f00c449ad046b1fe3cc27, type: 2}
+  - {fileID: 11400000, guid: 6da649f1f6fa5f7408ded1b44dbc4865, type: 2}
   _platformPrefabs:
   - {fileID: 1952259838136634242, guid: 45e583de93dfe994a962557975d9f07e, type: 3}
+  - {fileID: 2517157752559971842, guid: aee0348c200bee740aecb00525efb396, type: 3}
+  - {fileID: 1877600671314930203, guid: 5e7df20f45874e740bb4100c808ca3d2, type: 3}
+  _enemyPrefabs:
+  - {fileID: 3847372278445381382, guid: 0a19e2df7b8340a4c84d3d2574ed410d, type: 3}
+  - {fileID: 6881778276357804934, guid: 5b6b54aec66049e4993da99f4db17a95, type: 3}
+  - {fileID: 1032702666577012491, guid: 2bd643e0623e1b846b0b980178d00c7d, type: 3}
   _cameraPrefab: {fileID: 3897284644736826946, guid: 3d810099f01dcc74bb1bb230c1fbe1d3,
     type: 3}
   _playerPref: {fileID: 3214979398145905463, guid: ce3bda85d1eefc74696af0d96c08adb7,
@@ -23,11 +37,11 @@ MonoBehaviour:
   _objectGarbageCollectorInterval: 15
   _objectCleanupDistanceToPlayer: 30
   _spawnIntervalTimer: 0.5
-  _maxPlatformsPerRow: 3
+  _maxPlatformsPerRow: 1
   _rowSpacing: 4
   _minDistanceBetweenPlatformsX: 3
   _maxSpawnHeightAbovePlayer: 25
   _useManualXBounds: 0
   _manualMinX: -5
   _manualMaxX: 5
-  _xSpacing: 2
+  _xSpacing: 5

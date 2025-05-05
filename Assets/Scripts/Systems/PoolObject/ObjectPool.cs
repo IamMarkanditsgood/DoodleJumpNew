@@ -49,9 +49,11 @@ public class ObjectPool<T> where T : Component
 
     public void DisableComponent(T obj)
     {
-        
         obj.gameObject.SetActive(false);
         _disabledPool.Add(obj);
         _enabledPool.Remove(obj);
+
+        if(obj.gameObject.transform.parent != _container)
+            obj.gameObject.transform.SetParent(_container);
     }
 }

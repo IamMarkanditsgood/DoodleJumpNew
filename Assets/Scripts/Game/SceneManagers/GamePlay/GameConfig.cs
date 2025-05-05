@@ -6,10 +6,16 @@ public class GameConfig : ScriptableObject
     [Header("Configs")]
     [SerializeField] private CharacterPlayerConfig _playerConfig;
     [SerializeField] private CameraConfig _cameraConfig;
+    [Tooltip("All used configs. You have to add here at list one config of each type of platform config")]
+    [SerializeField] private BasicPlatformConfig[] _platformConfigs;
+    [Tooltip("All used configs. You have to add here at list one config of each type of enemy config")]
+    [SerializeField] private BasicEnemyConfig[] _enemyConfigs;
 
     [Header("Prefab References")]
-    [Tooltip("Platform prefab to spawn")]
+    [Tooltip("Platforms prefab to spawn")]
     [SerializeField] private BasicPlatformController[] _platformPrefabs;
+    [Tooltip("Enemies prefab to spawn")]
+    [SerializeField] private BasicEnemyController[] _enemyPrefabs;
     [Tooltip("Camera prefab reference")]
     [SerializeField] private GameObject _cameraPrefab;
     [Tooltip("Player character prefab")]
@@ -28,11 +34,11 @@ public class GameConfig : ScriptableObject
     [SerializeField] private float _spawnIntervalTimer = 1f;
 
     [Header("Platform Row Configuration")]
-    [Tooltip("Number of platforms per horizontal row")]
+    [Tooltip("Number of enemies per horizontal row")]
     [SerializeField] private int _maxPlatformsPerRow = 3;
     [Tooltip("Vertical distance between platform rows")]
     [SerializeField] private float _rowSpacing = 2f;
-    [Tooltip("Minimum horizontal distance between platforms in same row")]
+    [Tooltip("Minimum horizontal distance between enemies in same row")]
     [SerializeField] private float _minDistanceBetweenPlatformsX = 1.2f;
     [Tooltip("Maximum spawn height above player position")]
     [SerializeField] private float _maxSpawnHeightAbovePlayer = 10;
@@ -47,12 +53,14 @@ public class GameConfig : ScriptableObject
 
     [Header("Platform Scattering")]
     [Tooltip("Random horizontal offset range for platform positions")]
-    [Range(0, 2)]
+    [Range(0, 10)]
     [SerializeField] private float _xSpacing = 1.5f;
 
     public CharacterPlayerConfig PlayerConfig => _playerConfig;
     public CameraConfig CameraConfig => _cameraConfig;
+    public BasicPlatformConfig[] PlatformConfigs => _platformConfigs;
     public BasicPlatformController[] PlatformPrefabs => _platformPrefabs;
+    public BasicEnemyController[] EnemyPrefabs => _enemyPrefabs;
     public GameObject CameraPrefab => _cameraPrefab;
     public GameObject PlayerPref => _playerPref;
     public float ObjectGarbageCollectorInterval => _objectGarbageCollectorInterval;

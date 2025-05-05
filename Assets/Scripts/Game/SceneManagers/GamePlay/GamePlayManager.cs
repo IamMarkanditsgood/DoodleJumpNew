@@ -40,6 +40,7 @@ public class GamePlayManager
     {
         IsGameStarted = true;
 
+        
         FirstSpawn();
 
          _spawnPlatforms = CoroutineServices.instance.StartRoutine(SpawnSceneObjects());
@@ -50,7 +51,7 @@ public class GamePlayManager
     {
         for (int i = 0; i < 5; i++)
         {
-            _platformsManager.SpawnPlatformRow(_gameConfig.MaxPlatformsPerRow, PlatformTypes.defaultPlatform);
+            _platformsManager.SpawnPlatformRow(_gameConfig.MaxPlatformsPerRow, PlatformTypes.broken);
         }
     }
 
@@ -58,7 +59,7 @@ public class GamePlayManager
     {
         while (true)
         {
-            _platformsManager.SpawnPlatformRow(_gameConfig.MaxPlatformsPerRow, PlatformTypes.defaultPlatform);
+            _platformsManager.SpawnPlatformRow(_gameConfig.MaxPlatformsPerRow, PlatformTypes.broken);
             yield return new WaitForSeconds(_gameConfig.SpawnIntervalTimer);
         }
     }

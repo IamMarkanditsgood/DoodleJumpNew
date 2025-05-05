@@ -2,7 +2,7 @@ using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D), typeof(Collider2D))]
-public class CharacterPlayerController : MonoBehaviour
+public class CharacterPlayerController : MonoBehaviour, IHitable
 {
     [SerializeField] private Camera _mainCamera;
     [SerializeField] private CharacterMovementManager _movementEngine;
@@ -50,7 +50,7 @@ public class CharacterPlayerController : MonoBehaviour
         HandleScreenWrapping();
         CheckFallDeath();
 
-        _movementEngine.CheckGroundStatus(_playerConfig.GroundNormalThreshold);
+        _movementEngine.CheckGroundStatus(_playerConfig.ContactNormalThreshold);
     }
 
     private void FixedUpdate()
@@ -62,7 +62,7 @@ public class CharacterPlayerController : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D collision)
     {
         _movementEngine.HandleCollision(collision,
-            _playerConfig.GroundNormalThreshold,
+            _playerConfig.ContactNormalThreshold,
             _playerConfig.JumpForce);
     }
 
@@ -98,5 +98,10 @@ public class CharacterPlayerController : MonoBehaviour
     {
         Debug.Log("Player Died!");
         Time.timeScale = 0;
+    }
+
+    public void Hit(float damage = 0)
+    {
+        Die();
     }
 }

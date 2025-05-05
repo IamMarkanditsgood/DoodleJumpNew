@@ -4,4 +4,5 @@
 public class PoolObjectManagerInitDataKit
 {
     public BasicPlatformController[] platforms;
+    public BasicEnemyController[] enemies;
 }

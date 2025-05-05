@@ -6,7 +6,7 @@ using UnityEngine;
 public class PlatformsManager
 {
     [SerializeField] private Transform _startSpawnYPos;
-
+    
     private GameConfig _gameConfig;
     private Camera _mainCamera;
     private Transform _player;
@@ -134,6 +134,35 @@ public class PlatformsManager
         platform.transform.SetPositionAndRotation(spawnPos, Quaternion.identity);
 
         _spawnedPlatforms.Add(platform.gameObject);
+
+        platform.Init(GetConfigByType(platformType));
+
+        BasicEnemyController enemy = PoolObjectManager.instant.enemyPoolObjectManager.GetEnemy(EnemyTypes.defaultEnemy);
+        Vector3 position =  platform.transform.position;
+        position.y += 1;
+        enemy.gameObject.transform.position = position;
+
+        if (platform is MovablePlatform)
+        {
+            SetMovablePlatform((MovablePlatform)platform);
+        }
     }
 
+    private void SetMovablePlatform(MovablePlatform movablePlatform)
+    {
+        movablePlatform.SetSpeedValue(5);
+    }
+
+    private BasicPlatformConfig GetConfigByType(PlatformTypes type)
+    {
+        foreach(var platformConfig in _gameConfig.PlatformConfigs)
+        {
+            if(platformConfig.PlatformType == type)
+            {
+                return platformConfig;
+            }
+        }
+        Debug.LogError($"You do not have {type} platform config");
+        return null;
+    }
 }

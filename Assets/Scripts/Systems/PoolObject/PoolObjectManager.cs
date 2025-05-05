@@ -6,8 +6,10 @@ using UnityEngine;
 public class PoolObjectManager
 {
     [SerializeField] private PlatformsPoolObjectManager _platformsPoolObjectManager;
+    [SerializeField] private EnemyPoolObjectManager _enemyPoolObjectManager;
 
     public PlatformsPoolObjectManager platformsPoolObjectManager => _platformsPoolObjectManager;
+    public EnemyPoolObjectManager enemyPoolObjectManager => _enemyPoolObjectManager;
 
     public static PoolObjectManager instant;
 
@@ -34,5 +36,6 @@ public class PoolObjectManager
     private void InitPoolObjects()
     {
         _platformsPoolObjectManager.InitPools(_poolObjectInitKit.platforms);
+        _enemyPoolObjectManager.InitPools(_poolObjectInitKit.enemies);
     }
 }

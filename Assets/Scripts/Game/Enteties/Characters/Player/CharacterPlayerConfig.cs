@@ -15,9 +15,9 @@ public class CharacterPlayerConfig : ScriptableObject
     [Tooltip("Minimum Y value of the collision normal to treat the contact as ground.\n" +
              "Y = 1 means the player hit the top of the platform (valid jump contact).\n" +
              "Y = -1 means the player hit the bottom of the platform (invalid for jumping).")]
-    [SerializeField, Range(-1, 1)] private float _groundNormalThreshold = 0.1f;
+    [SerializeField, Range(-1, 1)] private float _contactNormalThreshold = 0.1f;
     public float JumpForce => _jumpForce;
     public float MoveSpeed => _moveSpeed;
     public float DeathDistanceBelowCamera => _deathDistanceBelowCamera;
-    public float GroundNormalThreshold => _groundNormalThreshold;
+    public float ContactNormalThreshold => _contactNormalThreshold;
 }
