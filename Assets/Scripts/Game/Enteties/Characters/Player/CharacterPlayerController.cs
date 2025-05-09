@@ -9,7 +9,8 @@ public class CharacterPlayerController : MonoBehaviour, IHitable
     [SerializeField] private PlayerInputSystem _playerInputSystem;
 
     private CharacterPlayerConfig _playerConfig;
-   
+
+    private float _currentHealth;
     private float _screenWidthInUnits;
     private float _horizontalInput;
 
@@ -31,6 +32,8 @@ public class CharacterPlayerController : MonoBehaviour, IHitable
         _movementEngine.Initialize(GetComponent<Rigidbody2D>(), GetComponent<Collider2D>());
 
         _playerInputSystem.Init();
+
+        _currentHealth = _playerConfig.BasicHealth;
     }
 
     public void Subscribe()
@@ -102,6 +105,12 @@ public class CharacterPlayerController : MonoBehaviour, IHitable
 
     public void Hit(float damage = 0)
     {
-        Die();
+        _currentHealth -= damage;
+
+        if (_currentHealth < 0)
+        {
+            _currentHealth = 0;
+            Die();
+        }
     }
 }

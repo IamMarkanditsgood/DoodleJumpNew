@@ -18,14 +18,21 @@ public abstract class BasicEnemyController : MonoBehaviour
         _basicEnemyConfig = basicEnemyConfig;
     }
 
+    private void Update()
+    {
+        UpdateEnemy();
+    }
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
         HandleContact(collision);
     }
 
+    public virtual void UpdateEnemy() { }
+
     public virtual void HandleContact(Collision2D collision)
     {
-        if (!collision.gameObject.CompareTag("Player")) return;
+        if (!collision.gameObject.CompareTag(GameTags.instantiate.PlayerTag)) return;
 
         foreach (ContactPoint2D contact in collision.contacts)
         {
@@ -51,7 +58,9 @@ public abstract class BasicEnemyController : MonoBehaviour
     public virtual void HitPlayer(Collision2D collision)
     {
         IHitable hitablePlayer = collision.gameObject.GetComponent<IHitable>();
-        hitablePlayer.Hit();
+
+        if (hitablePlayer != null)
+            hitablePlayer.Hit();
     }
 
     public virtual void Die()

@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: ShootableEnemy
   m_EditorClassIdentifier: 
   _enemyType: 2
-  _canDie: 0
+  _canDie: 1

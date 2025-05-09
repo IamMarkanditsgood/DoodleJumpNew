@@ -16,8 +16,13 @@ public class CharacterPlayerConfig : ScriptableObject
              "Y = 1 means the player hit the top of the platform (valid jump contact).\n" +
              "Y = -1 means the player hit the bottom of the platform (invalid for jumping).")]
     [SerializeField, Range(-1, 1)] private float _contactNormalThreshold = 0.1f;
+
+    [Tooltip("The health of player. It is recommended to keep it on 0")]
+    [SerializeField] private float _basicHealth = 0f;
+
     public float JumpForce => _jumpForce;
     public float MoveSpeed => _moveSpeed;
     public float DeathDistanceBelowCamera => _deathDistanceBelowCamera;
     public float ContactNormalThreshold => _contactNormalThreshold;
+    public float BasicHealth => _basicHealth;
 }

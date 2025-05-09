@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: MovablePlatform
   m_EditorClassIdentifier: 
   _platformType: 2
-  _basicSpeed: 0
+  _basicSpeed: 5
   _useCustomMovementLimits: 0
   _leftMovementLimit: -5
   _righMovementtLimit: 5

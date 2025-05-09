@@ -42,7 +42,7 @@ public class CharacterMovementManager
 
     public void HandleCollision(Collision2D collision, float groundCheckOffset, float jumpForce)
     {
-        if (!collision.gameObject.CompareTag("Platform") && !collision.gameObject.CompareTag("Enemy")) return;
+        if (!collision.gameObject.CompareTag(GameTags.instantiate.PlatformTag) && !collision.gameObject.CompareTag(GameTags.instantiate.EnemyTag)) return;
 
         if (IsCollisionBelow(collision, groundCheckOffset))
         {

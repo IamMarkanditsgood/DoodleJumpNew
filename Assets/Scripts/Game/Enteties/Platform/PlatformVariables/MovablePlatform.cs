@@ -15,16 +15,16 @@ public class MovablePlatform : BasicPlatformController
     {
         base.Init(basicPlatformConfig);
 
-        _movablePlatformConfig = (MovablePlatformConfig)basicPlatformConfig;
-        _currentSpeed = _movablePlatformConfig.BasicSpeed;
+        _movablePlatformConfig = (MovablePlatformConfig)basicPlatformConfig; 
         _currentDiraction = _movablePlatformConfig.StartDirection;
 
+        SetSpeedValue();
         SetBounds();
     }
 
-    public void SetSpeedValue(float value)
+    private void SetSpeedValue()
     {
-        _currentSpeed = value;
+        _currentSpeed = _movablePlatformConfig.BasicSpeed;
     }
 
     private void SetBounds()

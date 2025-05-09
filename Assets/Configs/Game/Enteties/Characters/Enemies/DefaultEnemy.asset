@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: DefaultEnemy
   m_EditorClassIdentifier: 
   _enemyType: 0
-  _canDie: 0
+  _canDie: 1

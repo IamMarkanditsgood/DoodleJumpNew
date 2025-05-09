@@ -11,14 +11,23 @@ public class PlatformsSpawnManager
     private Camera _mainCamera;
     private Transform _player;
     private List<GameObject> _spawnedPlatforms = new List<GameObject>();
-    private float _nextSpawnY; 
+
+    private float _prevSpawnY;
+    private float _nextSpawnY;
+    private float _minXSpawnPos;
+    private float _maxXSpawnPos;
+
+    public float PrewSpawnY => _prevSpawnY;
+    public float NextSpawnY => _nextSpawnY;
 
     public void Init(Transform player, Camera mainCamera, GameConfig gameConfig)
     {
         _player = player;
         _mainCamera = mainCamera;
         _gameConfig = gameConfig;
+        _prevSpawnY = _startSpawnYPos.position.y;
         _nextSpawnY = _startSpawnYPos.position.y;
+        SetSpawnBounds();
     }
 
     public void ClearPlatformsGarbage(Transform player)
@@ -44,49 +53,38 @@ public class PlatformsSpawnManager
         }
     }
 
-    public void SpawnPlatformRow(int platformsAmmount, PlatformTypes platformType)
+    public GameObject GetPlatformInRow(float yRow)
     {
-        if (ShouldSkipSpawn()) return;
-
-        GetSpawnBounds(out float minX, out float maxX);
-        SpawnPlatformsInRow(minX, maxX, platformsAmmount, platformType);
-
-        _nextSpawnY += _gameConfig.RowSpacing;
-    }
-
-    private bool ShouldSkipSpawn()
-    {
-        float playerY = _player.transform.position.y;
-        return _nextSpawnY - playerY > _gameConfig.MaxSpawnHeightAbovePlayer;
-    }
-
-    private void GetSpawnBounds(out float minX, out float maxX)
-    {
-        if (_gameConfig.UseManualXBounds)
+        foreach (var platform in _spawnedPlatforms)
         {
-            minX = _gameConfig.ManualMinX;
-            maxX = _gameConfig.ManualMaxX;
+            if (platform == null) continue;
+
+            if (Mathf.Approximately(platform.transform.position.y, yRow))
+            {
+                return platform;
+            }
         }
-        else
-        {
-            float cameraHalfWidth = _mainCamera.orthographicSize * _mainCamera.aspect;
-            Vector3 cameraPos = _mainCamera.transform.position;
-            minX = cameraPos.x - cameraHalfWidth;
-            maxX = cameraPos.x + cameraHalfWidth;
-        }
+
+        Debug.LogWarning($"No platform found in row: {yRow}");
+        return null;
     }
 
-    private void SpawnPlatformsInRow(float minX, float maxX, int platformsAmmount, PlatformTypes platformType)
+    public void SpawnPlatforms(List<PlatformTypes> platformType)
     {
-        List<float> platformPositionsX = new List<float>();
+        if (!IsSpawnAvailable()) return;
 
-        for (int i = 0; i < platformsAmmount; i++)
+        for(int i = 0; i < platformType.Count; i++)
         {
-            TrySpawnPlatform(minX, maxX, platformPositionsX, i, platformsAmmount, platformType);
+            SpawnPlatform(platformType[i]);
         }
+
+        float nextYRowPos = UnityEngine.Random.Range(_gameConfig.MinRowSpacing, _gameConfig.MaxRowSpacing);
+
+        _prevSpawnY = _nextSpawnY;
+        _nextSpawnY += nextYRowPos;
     }
 
-    private void TrySpawnPlatform(float minX, float maxX, List<float> existingPositions, int platformIndex, int platformsAmmount, PlatformTypes platformType)
+    private void SpawnPlatform(PlatformTypes platformType)
     {
         float spawnX;
         bool positionIsValid;
@@ -94,41 +92,60 @@ public class PlatformsSpawnManager
 
         do
         {
-            spawnX = CalculatePlatformX(minX, maxX, platformIndex, platformsAmmount);
-            positionIsValid = IsPositionValid(spawnX, existingPositions);
+            spawnX = UnityEngine.Random.Range(_minXSpawnPos, _maxXSpawnPos);
+            positionIsValid = IsPositionValid(spawnX);
             attempts++;
 
         } while (!positionIsValid && attempts <= 100);
 
         if (positionIsValid)
         {
-            SpawnSinglePlatform(spawnX, platformType);
-            existingPositions.Add(spawnX);
+            SpawnPlatformOnPosition(spawnX, platformType);
         }
     }
 
-    private float CalculatePlatformX(float minX, float maxX, int platformIndex, int platformsAmmount)
+    private bool IsSpawnAvailable()
     {
-        float step = (maxX - minX) / (platformsAmmount + 1);
-        return minX + (platformIndex + 1) * step +
-               UnityEngine.Random.Range(-_gameConfig.XSpacing, _gameConfig.XSpacing);
+        float playerY = _player.transform.position.y;
+        return (_nextSpawnY - playerY) < _gameConfig.MaxSpawnHeightAbovePlayer;
     }
 
-    private bool IsPositionValid(float xPos, List<float> existingPositions)
+    private void SetSpawnBounds()
     {
-        foreach (float existingX in existingPositions)
+        if (_gameConfig.UseManualXBounds)
         {
-            if (Mathf.Abs(xPos - existingX) < _gameConfig.MinDistanceBetweenPlatformsX)
+            _minXSpawnPos = _gameConfig.ManualMinX;
+            _maxXSpawnPos = _gameConfig.ManualMaxX;
+        }
+        else
+        {
+            float cameraHalfWidth = _mainCamera.orthographicSize * _mainCamera.aspect;
+            Vector3 cameraPos = _mainCamera.transform.position;
+            _minXSpawnPos = cameraPos.x - cameraHalfWidth;
+            _maxXSpawnPos = cameraPos.x + cameraHalfWidth;
+        }
+    }
+
+    private bool IsPositionValid(float xPos)
+    {
+        for (int i = 0; i < _spawnedPlatforms.Count; i++)
+        {
+            Vector3 platformPos = _spawnedPlatforms[i].transform.position;
+
+            if (Mathf.Approximately(platformPos.y, _nextSpawnY))
             {
-                return false;
+                if (Mathf.Abs(platformPos.x - xPos) < _gameConfig.MinDistanceBetweenPlatformsX)
+                {
+                    return false;
+                }
             }
         }
         return true;
     }
 
-    private void SpawnSinglePlatform(float xPos, PlatformTypes platformType)
+    private void SpawnPlatformOnPosition(float spanwPos, PlatformTypes platformType)
     {
-        Vector2 spawnPos = new Vector2(xPos, _nextSpawnY);
+        Vector2 spawnPos = new Vector2(spanwPos, _nextSpawnY);
 
         BasicPlatformController platform = PoolObjectManager.instant.platformsPoolObjectManager.GetPlatform(platformType);
         platform.transform.SetPositionAndRotation(spawnPos, Quaternion.identity);
@@ -136,17 +153,6 @@ public class PlatformsSpawnManager
         _spawnedPlatforms.Add(platform.gameObject);
 
         platform.Init(GetConfigByType(platformType));
-
-
-        if (platform is MovablePlatform)
-        {
-            SetMovablePlatform((MovablePlatform)platform);
-        }
-    }
-
-    private void SetMovablePlatform(MovablePlatform movablePlatform)
-    {
-        movablePlatform.SetSpeedValue(5);
     }
 
     private BasicPlatformConfig GetConfigByType(PlatformTypes type)

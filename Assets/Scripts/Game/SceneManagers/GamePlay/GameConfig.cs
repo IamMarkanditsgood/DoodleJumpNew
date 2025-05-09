@@ -34,10 +34,10 @@ public class GameConfig : ScriptableObject
     [SerializeField] private float _spawnIntervalTimer = 1f;
 
     [Header("Platform Row Configuration")]
-    [Tooltip("Number of enemies per horizontal row")]
-    [SerializeField] private int _maxPlatformsPerRow = 3;
     [Tooltip("Vertical distance between platform rows")]
-    [SerializeField] private float _rowSpacing = 2f;
+    [SerializeField] private float _maxRowSpacing = 2f;
+    [Tooltip("Vertical distance between platform rows")]
+    [SerializeField] private float _minRowSpacing = 0.5f;
     [Tooltip("Minimum horizontal distance between enemies in same row")]
     [SerializeField] private float _minDistanceBetweenPlatformsX = 1.2f;
     [Tooltip("Maximum spawn height above player position")]
@@ -51,14 +51,11 @@ public class GameConfig : ScriptableObject
     [Tooltip("Maximum X position when using manual bounds")]
     [SerializeField] private float _manualMaxX = 2f;
 
-    [Header("Platform Scattering")]
-    [Tooltip("Random horizontal offset range for platform positions")]
-    [Range(0, 10)]
-    [SerializeField] private float _xSpacing = 1.5f;
 
     public CharacterPlayerConfig PlayerConfig => _playerConfig;
     public CameraConfig CameraConfig => _cameraConfig;
     public BasicPlatformConfig[] PlatformConfigs => _platformConfigs;
+    public BasicEnemyConfig[] EnemyConfigs => _enemyConfigs;
     public BasicPlatformController[] PlatformPrefabs => _platformPrefabs;
     public BasicEnemyController[] EnemyPrefabs => _enemyPrefabs;
     public GameObject CameraPrefab => _cameraPrefab;
@@ -66,11 +63,10 @@ public class GameConfig : ScriptableObject
     public float ObjectGarbageCollectorInterval => _objectGarbageCollectorInterval;
     public float ObjectCleanupDistanceToPlayer => _objectCleanupDistanceToPlayer;
     public float SpawnIntervalTimer => _spawnIntervalTimer;
-    public int MaxPlatformsPerRow => _maxPlatformsPerRow;
-    public float RowSpacing => _rowSpacing;
+    public float MaxRowSpacing => _maxRowSpacing;
+    public float MinRowSpacing => _minRowSpacing;
     public float MinDistanceBetweenPlatformsX => _minDistanceBetweenPlatformsX;
     public float MaxSpawnHeightAbovePlayer => _maxSpawnHeightAbovePlayer;
-    public float XSpacing => _xSpacing;
     public bool UseManualXBounds => _useManualXBounds;
     public float ManualMinX => _manualMinX;
     public float ManualMaxX => _manualMaxX;

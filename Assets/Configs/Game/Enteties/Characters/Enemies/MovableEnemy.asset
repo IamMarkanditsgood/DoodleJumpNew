@@ -13,4 +13,9 @@ MonoBehaviour:
   m_Name: MovableEnemy
   m_EditorClassIdentifier: 
   _enemyType: 1
-  _canDie: 0
+  _canDie: 1
+  _basicSpeed: 2
+  _useCustomMovementLimits: 0
+  _leftMovementLimit: -5
+  _righMovementtLimit: 5
+  _startDirection: 1
