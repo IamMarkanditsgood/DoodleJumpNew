@@ -32,7 +32,7 @@ public abstract class BasicEnemyController : MonoBehaviour
             Vector2 contactNormal = contact.normal;
 
             // hit from top
-            if (contactNormal.y > _contactNormalThreshold)
+            if (contactNormal.y < -_contactNormalThreshold)
             {
                 if(_basicEnemyConfig.CanDie)
                     Die();  
@@ -40,7 +40,7 @@ public abstract class BasicEnemyController : MonoBehaviour
                 break;
             }
             // hit from botton
-            else if(contactNormal.y < -_contactNormalThreshold)
+            else if(contactNormal.y > _contactNormalThreshold)
             {
                 HitPlayer(collision);
                 break;

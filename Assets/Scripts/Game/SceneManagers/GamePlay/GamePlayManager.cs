@@ -7,7 +7,7 @@ using static UnityEditor.Experimental.GraphView.GraphView;
 [Serializable]
 public class GamePlayManager
 {
-    [SerializeField] private PlatformsManager _platformsManager;
+    [SerializeField] private PlatformsSpawnManager _platformsSpawnManager;
 
     private Camera _mainCamera;
     private GameConfig _gameConfig;
@@ -27,7 +27,7 @@ public class GamePlayManager
 
         _mainCamera = Camera.main;
 
-        _platformsManager.Init(player.transform, _mainCamera, _gameConfig);
+        _platformsSpawnManager.Init(player.transform, _mainCamera, _gameConfig);
     }
 
     public void DeInit()
@@ -51,7 +51,7 @@ public class GamePlayManager
     {
         for (int i = 0; i < 5; i++)
         {
-            _platformsManager.SpawnPlatformRow(_gameConfig.MaxPlatformsPerRow, PlatformTypes.broken);
+            _platformsSpawnManager.SpawnPlatformRow(_gameConfig.MaxPlatformsPerRow, PlatformTypes.broken);
         }
     }
 
@@ -59,7 +59,7 @@ public class GamePlayManager
     {
         while (true)
         {
-            _platformsManager.SpawnPlatformRow(_gameConfig.MaxPlatformsPerRow, PlatformTypes.broken);
+            _platformsSpawnManager.SpawnPlatformRow(_gameConfig.MaxPlatformsPerRow, PlatformTypes.broken);
             yield return new WaitForSeconds(_gameConfig.SpawnIntervalTimer);
         }
     }
@@ -67,7 +67,7 @@ public class GamePlayManager
     {
         while (true)
         {
-            _platformsManager.ClearPlatformsGarbage(_player.transform);
+            _platformsSpawnManager.ClearPlatformsGarbage(_player.transform);
             yield return new WaitForSeconds(_gameConfig.ObjectGarbageCollectorInterval);
         }
     }

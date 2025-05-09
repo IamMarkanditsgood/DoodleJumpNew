@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [Serializable]
-public class PlatformsManager
+public class PlatformsSpawnManager
 {
     [SerializeField] private Transform _startSpawnYPos;
     
@@ -137,10 +137,6 @@ public class PlatformsManager
 
         platform.Init(GetConfigByType(platformType));
 
-        BasicEnemyController enemy = PoolObjectManager.instant.enemyPoolObjectManager.GetEnemy(EnemyTypes.defaultEnemy);
-        Vector3 position =  platform.transform.position;
-        position.y += 1;
-        enemy.gameObject.transform.position = position;
 
         if (platform is MovablePlatform)
         {
