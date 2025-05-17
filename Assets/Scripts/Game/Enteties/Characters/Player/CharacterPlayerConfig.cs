@@ -20,9 +20,13 @@ public class CharacterPlayerConfig : ScriptableObject
     [Tooltip("The health of player. It is recommended to keep it on 0")]
     [SerializeField] private float _basicHealth = 0f;
 
+    [SerializeField]
+    private LayerMask _boosterLayers;
+
     public float JumpForce => _jumpForce;
     public float MoveSpeed => _moveSpeed;
     public float DeathDistanceBelowCamera => _deathDistanceBelowCamera;
     public float ContactNormalThreshold => _contactNormalThreshold;
     public float BasicHealth => _basicHealth;
+    public LayerMask BoosterLayers => _boosterLayers;
 }

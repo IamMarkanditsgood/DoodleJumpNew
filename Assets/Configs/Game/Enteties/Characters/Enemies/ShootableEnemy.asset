@@ -14,3 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _enemyType: 2
   _canDie: 1
+  _shootingDelay: 2
+  _ammoConfigs:
+  - {fileID: 11400000, guid: 51259306b49c28f46b5436ad177d5c74, type: 2}
+  _currentAmmo: 0

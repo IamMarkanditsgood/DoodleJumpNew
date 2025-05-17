@@ -7,12 +7,14 @@ public class CharacterPlayerController : MonoBehaviour, IHitable
     [SerializeField] private Camera _mainCamera;
     [SerializeField] private CharacterMovementManager _movementEngine;
     [SerializeField] private PlayerInputSystem _playerInputSystem;
-
+    
     private CharacterPlayerConfig _playerConfig;
 
     private float _currentHealth;
     private float _screenWidthInUnits;
     private float _horizontalInput;
+
+    private bool _canGetHit = true;
 
     private void Start()
     {
@@ -64,9 +66,65 @@ public class CharacterPlayerController : MonoBehaviour, IHitable
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        _movementEngine.HandleCollision(collision,
-            _playerConfig.ContactNormalThreshold,
-            _playerConfig.JumpForce);
+        HandleCollision(collision);
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        HandleTrigger(collision);
+    }
+
+    private void HandleCollision(Collision2D collision)
+    {
+        if(!IsInteractableCollision(collision)) return;
+        
+        if (IsCollisionBelow(collision, _playerConfig.ContactNormalThreshold))
+        {
+            if (!_canGetHit)
+                _canGetHit = false;
+
+            _movementEngine.Jump(_playerConfig.JumpForce);
+        }
+    }
+
+    private void HandleTrigger(Collider2D collider)
+    {
+        if (!IsInLayerMask(collider.gameObject, _playerConfig.BoosterLayers)) return;
+
+        if (IsColliderBelow(collider, _playerConfig.ContactNormalThreshold, gameObject.transform))
+        {
+            BasicBoosterController booster = collider.gameObject.GetComponent<BasicBoosterController>();
+            if (booster != null)
+                TryToUseBooster(booster);
+        }
+    }
+
+    private bool IsInteractableCollision(Collision2D collision)
+    {
+        return collision.gameObject.CompareTag(GameTags.instantiate.PlatformTag) ||
+           collision.gameObject.CompareTag(GameTags.instantiate.EnemyTag);
+    }
+    private bool IsInLayerMask(GameObject obj, LayerMask mask)
+    {
+        return (mask.value & (1 << obj.layer)) != 0;
+    }
+
+    private bool IsCollisionBelow(Collision2D collision, float tolerance)
+    {
+        foreach (ContactPoint2D contact in collision.contacts)
+        {
+            if (contact.normal.y > tolerance)
+            {
+                return true;
+            }
+        }
+        return false;
+
+    }
+    private bool IsColliderBelow(Collider2D collider, float tolerance, Transform self)
+    {
+        Vector2 directionToCollider = (collider.bounds.center - self.position).normalized;
+        return directionToCollider.y > tolerance;
     }
 
     private void OnMoveInput(Vector2 direction)
@@ -107,10 +165,16 @@ public class CharacterPlayerController : MonoBehaviour, IHitable
     {
         _currentHealth -= damage;
 
-        if (_currentHealth < 0)
+        if (_currentHealth <= 0)
         {
             _currentHealth = 0;
             Die();
         }
+    }
+
+    private void TryToUseBooster(BasicBoosterController booster)
+    {
+        _canGetHit = false;
+        _movementEngine.Jump(booster.Interact());
     }
 }

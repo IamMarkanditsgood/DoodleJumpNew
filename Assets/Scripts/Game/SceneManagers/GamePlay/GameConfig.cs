@@ -10,12 +10,16 @@ public class GameConfig : ScriptableObject
     [SerializeField] private BasicPlatformConfig[] _platformConfigs;
     [Tooltip("All used configs. You have to add here at list one config of each type of enemy config")]
     [SerializeField] private BasicEnemyConfig[] _enemyConfigs;
+    [Tooltip("All used configs. You have to add here at list one config of each type of ammo config")]
+    [SerializeField] private BasicAmmoConfig[] _ammoConfigs;
 
     [Header("Prefab References")]
     [Tooltip("Platforms prefab to spawn")]
     [SerializeField] private BasicPlatformController[] _platformPrefabs;
     [Tooltip("Enemies prefab to spawn")]
     [SerializeField] private BasicEnemyController[] _enemyPrefabs;
+    [Tooltip("Ammo prefab to spawn")]
+    [SerializeField] private BasicAmmoController[] _ammoPrefabs;
     [Tooltip("Camera prefab reference")]
     [SerializeField] private GameObject _cameraPrefab;
     [Tooltip("Player character prefab")]
@@ -38,7 +42,7 @@ public class GameConfig : ScriptableObject
     [SerializeField] private float _maxRowSpacing = 2f;
     [Tooltip("Vertical distance between platform rows")]
     [SerializeField] private float _minRowSpacing = 0.5f;
-    [Tooltip("Minimum horizontal distance between enemies in same row")]
+    [Tooltip("Minimum horizontal distance between ammunitionsPool in same row")]
     [SerializeField] private float _minDistanceBetweenPlatformsX = 1.2f;
     [Tooltip("Maximum spawn height above player position")]
     [SerializeField] private float _maxSpawnHeightAbovePlayer = 10;
@@ -56,8 +60,10 @@ public class GameConfig : ScriptableObject
     public CameraConfig CameraConfig => _cameraConfig;
     public BasicPlatformConfig[] PlatformConfigs => _platformConfigs;
     public BasicEnemyConfig[] EnemyConfigs => _enemyConfigs;
+    public BasicAmmoConfig[] AmmoConfig => _ammoConfigs;
     public BasicPlatformController[] PlatformPrefabs => _platformPrefabs;
     public BasicEnemyController[] EnemyPrefabs => _enemyPrefabs;
+    public BasicAmmoController[] AmmoPrefabs => _ammoPrefabs;
     public GameObject CameraPrefab => _cameraPrefab;
     public GameObject PlayerPref => _playerPref;
     public float ObjectGarbageCollectorInterval => _objectGarbageCollectorInterval;

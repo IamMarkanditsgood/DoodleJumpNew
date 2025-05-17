@@ -49,6 +49,7 @@ public class PlatformsSpawnManager
             _spawnedPlatforms.Remove(platform);
 
             BasicPlatformController platformController = platform.GetComponent<BasicPlatformController>();
+            platformController.Toggle(false);
             PoolObjectManager.instant.platformsPoolObjectManager.DisablePlatform(platformController, platformController.PlatformType);
         }
     }
@@ -69,13 +70,16 @@ public class PlatformsSpawnManager
         return null;
     }
 
-    public void SpawnPlatforms(List<PlatformTypes> platformType)
+    public void SpawnPlatforms(List<PlatformTypes> platformType, bool spawnRandomBooster = false)
     {
         if (!IsSpawnAvailable()) return;
 
-        for(int i = 0; i < platformType.Count; i++)
+        bool spanwBuster = spawnRandomBooster;
+
+        for (int i = 0; i < platformType.Count; i++)
         {
-            SpawnPlatform(platformType[i]);
+            SpawnPlatform(platformType[i], spanwBuster);
+            spanwBuster = false;
         }
 
         float nextYRowPos = UnityEngine.Random.Range(_gameConfig.MinRowSpacing, _gameConfig.MaxRowSpacing);
@@ -84,7 +88,7 @@ public class PlatformsSpawnManager
         _nextSpawnY += nextYRowPos;
     }
 
-    private void SpawnPlatform(PlatformTypes platformType)
+    private void SpawnPlatform(PlatformTypes platformType, bool spawnRandomBooster = false)
     {
         float spawnX;
         bool positionIsValid;
@@ -100,7 +104,7 @@ public class PlatformsSpawnManager
 
         if (positionIsValid)
         {
-            SpawnPlatformOnPosition(spawnX, platformType);
+            SpawnPlatformOnPosition(spawnX, platformType, spawnRandomBooster);
         }
     }
 
@@ -143,7 +147,7 @@ public class PlatformsSpawnManager
         return true;
     }
 
-    private void SpawnPlatformOnPosition(float spanwPos, PlatformTypes platformType)
+    private void SpawnPlatformOnPosition(float spanwPos, PlatformTypes platformType, bool spawnRandomBooster = false)
     {
         Vector2 spawnPos = new Vector2(spanwPos, _nextSpawnY);
 
@@ -153,6 +157,9 @@ public class PlatformsSpawnManager
         _spawnedPlatforms.Add(platform.gameObject);
 
         platform.Init(GetConfigByType(platformType));
+        platform.Toggle(true);
+        if (spawnRandomBooster)
+            platform.AddRandomBuster();
     }
 
     private BasicPlatformConfig GetConfigByType(PlatformTypes type)

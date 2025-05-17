@@ -5,7 +5,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "MovableEnemy", menuName = "ScriptableObjects/GamePlayManager/Enteties/Enemies/MovableEnemy", order = 1)]
 public class MovableEnemyConfig : BasicEnemyConfig
 {
-    [Tooltip("The horizontal movement speed of the platform (units per second).")]
+    [Tooltip("The horizontal movement speed of the platform (units per second).It should be positive!")]
     [SerializeField] private float _basicSpeed = 2f;
     [Tooltip("Enable to use custom movement limits. If disabled, camera bounds will be used.")]
     [SerializeField] private bool _useCustomMovementLimits = false;

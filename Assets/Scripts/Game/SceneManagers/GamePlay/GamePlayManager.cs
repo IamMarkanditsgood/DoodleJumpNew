@@ -40,7 +40,6 @@ public class GamePlayManager
     public void StartGame()
     {
         IsGameStarted = true;
-
         
         FirstSpawn();
 
@@ -53,11 +52,11 @@ public class GamePlayManager
         for (int i = 0; i < 5; i++)
         {
             List<PlatformTypes> platformsInRom = new List<PlatformTypes> { PlatformTypes.broken, PlatformTypes.movable, PlatformTypes.defaultPlatform };
-            _platformsSpawnManager.SpawnPlatforms(platformsInRom);
+            _platformsSpawnManager.SpawnPlatforms(platformsInRom, true);
 
-            GameObject platform = _platformsSpawnManager.GetPlatformInRow(_platformsSpawnManager.PrewSpawnY);
+            /*GameObject platform = _platformsSpawnManager.GetPlatformInRow(_platformsSpawnManager.PrewSpawnY);
             float xPos = platform.transform.position.x;
-            _enemySpawnManager.SpawnEnemy(EnemyTypes.movableEnemy, _platformsSpawnManager.PrewSpawnY + 1f, xPos);
+            _enemySpawnManager.SpawnEnemy(EnemyTypes.shootableEnemy, _platformsSpawnManager.PrewSpawnY + 1f, xPos);*/
         }
     }
 

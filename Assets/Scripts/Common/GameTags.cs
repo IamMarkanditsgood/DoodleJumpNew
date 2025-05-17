@@ -2,9 +2,12 @@ using UnityEngine;
 
 public class GameTags : MonoBehaviour
 {
-    [SerializeField] private string _playerTag = "Player";
-    [SerializeField] private string _enemyTag = "Enemy";
-    [SerializeField] private string _platformTag = "Platform";
+    [SerializeField, TagSelector]
+    private string _playerTag = "Player";
+    [SerializeField, TagSelector]
+    private string _enemyTag = "Enemy";
+    [SerializeField, TagSelector]
+    private string _platformTag = "Platform";
 
     public string PlayerTag => _playerTag;
     public string EnemyTag => _enemyTag;

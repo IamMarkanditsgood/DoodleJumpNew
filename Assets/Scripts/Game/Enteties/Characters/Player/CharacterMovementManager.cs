@@ -39,34 +39,10 @@ public class CharacterMovementManager
 
         var hit = Physics2D.Raycast(rayStart, Vector2.down, rayLength);
     }
-
-    public void HandleCollision(Collision2D collision, float groundCheckOffset, float jumpForce)
-    {
-        if (!collision.gameObject.CompareTag(GameTags.instantiate.PlatformTag) && !collision.gameObject.CompareTag(GameTags.instantiate.EnemyTag)) return;
-
-        if (IsCollisionBelow(collision, groundCheckOffset))
-        {
-            Jump(jumpForce);
-        }
-    }
-
-    private bool IsCollisionBelow(Collision2D collision, float tolerance)
-    {
-        foreach (ContactPoint2D contact in collision.contacts)
-        {
-            if (contact.normal.y > tolerance)
-            {
-                return true;
-            }
-        }
-        return false;
-
-    }
-
     /// <summary>
     /// Makes character jump if grounded
     /// </summary>
-    private void Jump(float jumpForce)
+    public void Jump(float jumpForce)
     {
         _rigidbody.velocity = new Vector2(
             _rigidbody.velocity.x,

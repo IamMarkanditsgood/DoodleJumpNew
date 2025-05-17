@@ -5,6 +5,7 @@ public abstract class BasicEnemyController : MonoBehaviour
     [SerializeField] private EnemyTypes _enemyType;
 
     private BasicEnemyConfig _basicEnemyConfig;
+    private bool _isActive;
 
     public EnemyTypes EnemyType => _enemyType;
 
@@ -18,13 +19,29 @@ public abstract class BasicEnemyController : MonoBehaviour
         _basicEnemyConfig = basicEnemyConfig;
     }
 
+    public virtual void Toggle(bool state)
+    {
+        _isActive = state;
+
+        if(!_isActive)
+        {
+            StopAllCoroutines();
+        }    
+    }
+
     private void Update()
     {
+        if (!_isActive)
+            return;
+
         UpdateEnemy();
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
+        if (!_isActive)
+            return;
+
         HandleContact(collision);
     }
 
@@ -65,6 +82,7 @@ public abstract class BasicEnemyController : MonoBehaviour
 
     public virtual void Die()
     {
+        Toggle(false);
         PoolObjectManager.instant.enemyPoolObjectManager.DisableEnemy(this, _enemyType);
     }
 }

@@ -7,9 +7,11 @@ public class PoolObjectManager
 {
     [SerializeField] private PlatformsPoolObjectManager _platformsPoolObjectManager;
     [SerializeField] private EnemyPoolObjectManager _enemyPoolObjectManager;
+    [SerializeField] private AmmoPoolObjectManager _ammoPoolObjectManager;
 
     public PlatformsPoolObjectManager platformsPoolObjectManager => _platformsPoolObjectManager;
     public EnemyPoolObjectManager enemyPoolObjectManager => _enemyPoolObjectManager;
+    public AmmoPoolObjectManager ammoPoolObjectManager => _ammoPoolObjectManager;
 
     public static PoolObjectManager instant;
 
@@ -37,5 +39,6 @@ public class PoolObjectManager
     {
         _platformsPoolObjectManager.InitPools(_poolObjectInitKit.platforms);
         _enemyPoolObjectManager.InitPools(_poolObjectInitKit.enemies);
+        _ammoPoolObjectManager.InitPools(_poolObjectInitKit.ammunitions);
     }
 }

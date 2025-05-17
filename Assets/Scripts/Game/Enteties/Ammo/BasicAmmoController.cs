@@ -1,37 +1,90 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public abstract class BasicAmmoController : MonoBehaviour
 {
-    private AmmoConfig _ammoConfig;
+    private BasicAmmoConfig _ammoConfig;
 
-    private bool _isActive;   
+    private bool _isActive;
 
-    public virtual void Init(AmmoConfig ammoConfig)
+    public AmmoTypes AmmoType { get; private set; }
+
+    private Coroutine _lifeTime;
+
+    public virtual void Init(BasicAmmoConfig ammoConfig)
     {
         _ammoConfig = ammoConfig;
+        AmmoType = _ammoConfig.AmmoType;
     }
 
     public virtual void Toggle(bool state)
     {
         _isActive = state;
+
+        if(_isActive)
+        {
+            _lifeTime = StartCoroutine(Lifetimer());
+        }
+        else if(!_isActive)
+        {        
+            StopAllCoroutines();
+
+            if (_lifeTime != null)
+                _lifeTime = null;
+        }
+    }
+
+    private void Update()
+    {
+        if(!_isActive) 
+            return;
+
+        UpdateAmmo();
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (!_isActive)
+            return;
+
+        HandleCollision(collision);
+    }
+
+    public virtual void UpdateAmmo()
+    {
+        Move();
     }
 
     public virtual void Move() { if (!_isActive) return; }
+
+    public virtual void HandleCollision(Collider2D collision)
+    {
+        if (!_isActive || !collision.gameObject.CompareTag(GameTags.instantiate.PlayerTag)) return;
+
+        HitObject(collision.gameObject);
+        DisableAmmo();
+    }
 
     public virtual void HitObject(GameObject hitedObject)
     {
         IHitable hitablePlayer = hitedObject.GetComponent<IHitable>();
 
-        if(hitablePlayer != null)
+        if (hitablePlayer != null)
             hitablePlayer.Hit();
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    public virtual void DisableAmmo()
     {
-        if (!_isActive || !collision.gameObject.CompareTag(GameTags.instantiate.PlayerTag)) return;
+        Toggle(false);
+        PoolObjectManager.instant.ammoPoolObjectManager.DisableAmmo(this, AmmoType);
+    }
 
-        HitObject(collision.gameObject);
+
+ 
+
+    private IEnumerator Lifetimer()
+    {
+        yield return new WaitForSeconds(_ammoConfig.LifeTime);
+        DisableAmmo();
     }
 }

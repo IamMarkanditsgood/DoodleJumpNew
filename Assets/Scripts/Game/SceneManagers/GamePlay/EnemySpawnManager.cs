@@ -8,7 +8,7 @@ public class EnemySpawnManager
     private GameConfig _gameConfig;
     private Camera _mainCamera;
     private Transform _player;
-    private List<GameObject> _enemies = new List<GameObject>();
+    [SerializeField] private List<GameObject> _enemies = new List<GameObject>();
 
     private float _minXSpawnPos;
     private float _maxXSpawnPos;
@@ -37,10 +37,10 @@ public class EnemySpawnManager
 
         foreach (GameObject enemy in enemiesToRemove)
         {
-            enemiesToRemove.Remove(enemy);
-
             BasicEnemyController enemyController = enemy.GetComponent<BasicEnemyController>();
             PoolObjectManager.instant.enemyPoolObjectManager.DisableEnemy(enemyController, enemyController.EnemyType);
+
+            enemiesToRemove.Remove(enemy);
         }
     }
 
@@ -56,6 +56,7 @@ public class EnemySpawnManager
     {
         BasicEnemyController newEnemy = PoolObjectManager.instant.enemyPoolObjectManager.GetEnemy(enemyType);
         newEnemy.Init(GetConfigByType(enemyType));
+        newEnemy.Toggle(true);
         newEnemy.transform.position = pos;
         _enemies.Add(newEnemy.gameObject);
     }

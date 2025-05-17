@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using UnityEngine;
 
 public class BrokenPlatform : BasicPlatformController
@@ -14,7 +15,13 @@ public class BrokenPlatform : BasicPlatformController
     public override void Init(BasicPlatformConfig basicPlatformConfig)
     {
         base.Init(basicPlatformConfig);
-        _brokenPlatformConfig = (BrokenPlatformConfig) basicPlatformConfig;
+
+        _brokenPlatformConfig = basicPlatformConfig as BrokenPlatformConfig;
+
+        if (_brokenPlatformConfig == null)
+        {
+            throw new InvalidCastException($"[Init] _brokenPlatformConfig is not of type BrokenPlatformConfig in {gameObject.name}");
+        }
     }
 
     private void DeInit()
@@ -22,7 +29,7 @@ public class BrokenPlatform : BasicPlatformController
         _isBroken = false;
     }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+    public override void HandleCollision(Collision2D collision)
     {
         if (_isBroken) return;
 

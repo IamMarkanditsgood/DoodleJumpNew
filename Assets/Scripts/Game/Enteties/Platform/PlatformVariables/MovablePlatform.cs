@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class MovablePlatform : BasicPlatformController
@@ -15,11 +16,25 @@ public class MovablePlatform : BasicPlatformController
     {
         base.Init(basicPlatformConfig);
 
-        _movablePlatformConfig = (MovablePlatformConfig)basicPlatformConfig; 
-        _currentDiraction = _movablePlatformConfig.StartDirection;
+        _movablePlatformConfig = basicPlatformConfig as MovablePlatformConfig;
+
+        if (_movablePlatformConfig == null)
+        {
+            throw new InvalidCastException($"[Init] _movablePlatformConfig is not of type MovablePlatformConfig in {gameObject.name}");
+        }
+        else
+        {
+            _currentDiraction = _movablePlatformConfig.StartDirection;
+        }
 
         SetSpeedValue();
         SetBounds();
+    }
+
+    public override void UpdatePlatform()
+    {
+        base.UpdatePlatform();
+        MovePlatform();
     }
 
     private void SetSpeedValue()
@@ -47,11 +62,6 @@ public class MovablePlatform : BasicPlatformController
             _leftLimit = _movablePlatformConfig.LeftLimit;
             _rightLimit = _movablePlatformConfig.RightLimit;
         }
-    }
-
-    private void Update()
-    {
-        MovePlatform();
     }
 
     private void MovePlatform()

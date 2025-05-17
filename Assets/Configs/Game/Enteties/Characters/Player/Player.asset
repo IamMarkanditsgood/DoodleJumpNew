@@ -15,4 +15,8 @@ MonoBehaviour:
   _jumpForce: 10
   _moveSpeed: 5
   _deathDistanceBelowCamera: 2
-  _groundCheckOffset: 0.5
+  _contactNormalThreshold: 0.1
+  _basicHealth: 0
+  _boosterLayers:
+    serializedVersion: 2
+    m_Bits: 128

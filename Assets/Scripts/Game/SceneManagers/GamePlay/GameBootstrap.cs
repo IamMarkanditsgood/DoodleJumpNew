@@ -69,6 +69,7 @@ public class GameBootstrap : MonoBehaviour
 
         poolObjectManagerInitDataKit.platforms = _gameConfig.PlatformPrefabs;
         poolObjectManagerInitDataKit.enemies = _gameConfig.EnemyPrefabs;
+        poolObjectManagerInitDataKit.ammunitions = _gameConfig.AmmoPrefabs;
 
         _poolObjectManager.Init(poolObjectManagerInitDataKit);
     }

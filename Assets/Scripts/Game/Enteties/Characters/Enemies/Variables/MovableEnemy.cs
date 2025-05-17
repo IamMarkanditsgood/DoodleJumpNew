@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -17,8 +18,16 @@ public class MovableEnemy : BasicEnemyController
     {
         base.Init(basicEnemyConfig);
 
-        _movableEnemyConfig = (MovableEnemyConfig)basicEnemyConfig;
-        _currentDiraction = _movableEnemyConfig.StartDirection;
+        _movableEnemyConfig = basicEnemyConfig as MovableEnemyConfig;
+
+        if (_movableEnemyConfig == null)
+        {
+            throw new InvalidCastException($"[Init] _movableEnemyConfig is not of type MovableEnemyConfig in {gameObject.name}");
+        }
+        else
+        {
+            _currentDiraction = _movableEnemyConfig.StartDirection;
+        }
 
         SetSpeedValue();
         SetBounds();
@@ -70,7 +79,5 @@ public class MovableEnemy : BasicEnemyController
             _leftLimit = _movableEnemyConfig.LeftLimit;
             _rightLimit = _movableEnemyConfig.RightLimit;
         }
-    }
-
-    
+    }    
 }
