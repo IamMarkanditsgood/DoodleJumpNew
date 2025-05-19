@@ -5,9 +5,13 @@ public class BasicBoosterController : MonoBehaviour
     protected BasicBoosterConfig basicBoosterConfig;
     protected bool isActive;
 
+    public BasicBoosterConfig BoosterConfig => basicBoosterConfig;
+
     public virtual void Init(BasicBoosterConfig ñonfig)
     {
+   
         basicBoosterConfig = ñonfig;
+        Debug.Log(basicBoosterConfig.BoosterType);
     }
 
     public virtual void Toggle(bool state)
@@ -24,10 +28,9 @@ public class BasicBoosterController : MonoBehaviour
         }
     }
 
-    public float Interact()
+    public virtual void Interact()
     {
         Toggle(false);
-        return basicBoosterConfig.BoostJumpForce;
     }
 
     private void ConfigBooster()

@@ -58,8 +58,7 @@ public abstract class BasicPlatformController : MonoBehaviour
 
         BasicBoosterConfig basicBoosterConfig;
         float totalChance = _boosters.Sum(b => b.UsingChance);
-
-        float randomPoint = Random.Range(0f, totalChance);
+        float randomPoint = Random.Range(0f, totalChance); // √енеруЇмо точку в д≥апазон≥ [0, totalChance)
 
         float cumulative = 0f;
 

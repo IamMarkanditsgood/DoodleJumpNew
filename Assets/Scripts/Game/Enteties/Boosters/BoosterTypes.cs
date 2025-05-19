@@ -1,4 +1,4 @@
-public enum BooterTypes
+public enum BoosterTypes
 {
     Spring,
     Helicopter,

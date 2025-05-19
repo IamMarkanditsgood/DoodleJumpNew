@@ -9,10 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8aa4e1b073e07c34181fbe8506dbdb62, type: 3}
+  m_Script: {fileID: 11500000, guid: 33164b23dae38f74990620a01565e3b4, type: 3}
   m_Name: Helicopter
   m_EditorClassIdentifier: 
-  _booterType: 1
-  _usingChance: 25
-  _boostJumpForce: 150
+  _boosterType: 1
+  _usingChance: 0
+  _boostJumpForce: 25
   _boosterTag: Helicopter
+  _timeOfBoostUse: 5

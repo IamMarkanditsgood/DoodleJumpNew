@@ -529,6 +529,8 @@ MonoBehaviour:
   _gamePlayManager:
     _platformsSpawnManager:
       _startSpawnYPos: {fileID: 182194653}
+    _enemySpawnManager:
+      _enemies: []
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

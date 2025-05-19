@@ -11,6 +11,8 @@ public class CharacterMovementManager
 
     private float _horizontalInput;
 
+    public Rigidbody2D RigidBody => _rigidbody;
+
     public void Initialize(Rigidbody2D rb, Collider2D collider)
     {
         _rigidbody = rb;

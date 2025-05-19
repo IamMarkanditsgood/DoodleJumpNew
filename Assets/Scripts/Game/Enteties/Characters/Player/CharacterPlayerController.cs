@@ -1,5 +1,7 @@
+using System.Collections;
 using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
+using UnityEngine.Experimental.GlobalIllumination;
 
 [RequireComponent(typeof(Rigidbody2D), typeof(Collider2D))]
 public class CharacterPlayerController : MonoBehaviour, IHitable
@@ -10,11 +12,12 @@ public class CharacterPlayerController : MonoBehaviour, IHitable
     
     private CharacterPlayerConfig _playerConfig;
 
+    private BoosterUseManager _boosterUseManager = new BoosterUseManager();
+    private Collider2D _playerCollider;
+
     private float _currentHealth;
     private float _screenWidthInUnits;
     private float _horizontalInput;
-
-    private bool _canGetHit = true;
 
     private void Start()
     {
@@ -30,8 +33,13 @@ public class CharacterPlayerController : MonoBehaviour, IHitable
     {
         _playerConfig = characterPlayerConfig;
 
+        _playerCollider = gameObject.GetComponent<Collider2D>();
+        Rigidbody2D playerRB = GetComponent<Rigidbody2D>();
+
         if (!_mainCamera) _mainCamera = Camera.main;
-        _movementEngine.Initialize(GetComponent<Rigidbody2D>(), GetComponent<Collider2D>());
+
+        _movementEngine.Initialize(playerRB, _playerCollider);
+        _boosterUseManager.Init(playerRB);
 
         _playerInputSystem.Init();
 
@@ -80,8 +88,6 @@ public class CharacterPlayerController : MonoBehaviour, IHitable
         
         if (IsCollisionBelow(collision, _playerConfig.ContactNormalThreshold))
         {
-            if (!_canGetHit)
-                _canGetHit = false;
 
             _movementEngine.Jump(_playerConfig.JumpForce);
         }
@@ -93,6 +99,7 @@ public class CharacterPlayerController : MonoBehaviour, IHitable
 
         if (IsColliderBelow(collider, _playerConfig.ContactNormalThreshold, gameObject.transform))
         {
+
             BasicBoosterController booster = collider.gameObject.GetComponent<BasicBoosterController>();
             if (booster != null)
                 TryToUseBooster(booster);
@@ -124,7 +131,7 @@ public class CharacterPlayerController : MonoBehaviour, IHitable
     private bool IsColliderBelow(Collider2D collider, float tolerance, Transform self)
     {
         Vector2 directionToCollider = (collider.bounds.center - self.position).normalized;
-        return directionToCollider.y > tolerance;
+        return directionToCollider.y < tolerance;
     }
 
     private void OnMoveInput(Vector2 direction)
@@ -174,7 +181,76 @@ public class CharacterPlayerController : MonoBehaviour, IHitable
 
     private void TryToUseBooster(BasicBoosterController booster)
     {
-        _canGetHit = false;
-        _movementEngine.Jump(booster.Interact());
+        booster.Interact();
+
+        switch(booster.BoosterConfig.BoosterType)
+        {
+            case BoosterTypes.Spring:
+                _boosterUseManager.UseSpring(booster.BoosterConfig);
+                break;
+            case BoosterTypes.Helicopter:
+                _boosterUseManager.UseHelicopter(booster.BoosterConfig);
+                break;
+            case BoosterTypes.Jetpack:
+                _boosterUseManager.UseJetpack(booster.BoosterConfig);
+                break;
+        }
     }
+}
+public class BoosterUseManager
+{
+    private Rigidbody2D _playerRb;
+    private Coroutine _boosterCoroutine;
+    public void Init(Rigidbody2D playerRb)
+    {
+        _playerRb = playerRb;
+    }
+
+    public void UseSpring(BasicBoosterConfig boosterConfig)
+    {
+        if (_playerRb == null) return;
+
+        _playerRb.velocity = new Vector2(_playerRb.velocity.x, 0f);
+        _playerRb.AddForce(Vector2.up * boosterConfig.BoostJumpForce, ForceMode2D.Impulse);
+
+    }
+    public void UseHelicopter(BasicBoosterConfig boosterConfig)
+    {
+        if (_playerRb == null) return;
+
+        if (_boosterCoroutine != null)
+            CoroutineServices.instance.StopRoutine(_boosterCoroutine);
+
+        TimedBoosterConfig timedBoosterConfig = (TimedBoosterConfig)boosterConfig;
+        _boosterCoroutine = CoroutineServices.instance.StartRoutine(ApplyVerticalLift(boosterConfig.BoostJumpForce, timedBoosterConfig.TimeOfBoostUse));
+    }
+    public void UseJetpack(BasicBoosterConfig boosterConfig)
+    {
+        if (_playerRb == null) return;
+
+        if (_boosterCoroutine != null)
+            CoroutineServices.instance.StopRoutine(_boosterCoroutine);
+
+        TimedBoosterConfig timedBoosterConfig = (TimedBoosterConfig)boosterConfig;
+        _boosterCoroutine = CoroutineServices.instance.StartRoutine(ApplyVerticalLift(boosterConfig.BoostJumpForce, timedBoosterConfig.TimeOfBoostUse));
+    }
+
+    private IEnumerator ApplyVerticalLift(float force, float duration)
+    {
+        float timer = 0f;
+        
+        while (timer < duration)
+        {
+            if (_playerRb == null) yield break;
+
+            _playerRb.velocity = new Vector2(_playerRb.velocity.x, force);
+
+            timer += Time.deltaTime;
+            Debug.Log(timer);
+            yield return null;
+        }
+
+        _boosterCoroutine = null;
+    }
+
 }

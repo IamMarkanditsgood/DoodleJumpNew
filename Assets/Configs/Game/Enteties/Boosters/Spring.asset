@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8aa4e1b073e07c34181fbe8506dbdb62, type: 3}
   m_Name: Spring
   m_EditorClassIdentifier: 
-  _booterType: 0
-  _usingChance: 50
-  _boostJumpForce: 50
+  _boosterType: 0
+  _usingChance: 0
+  _boostJumpForce: 25
   _boosterTag: Spring
