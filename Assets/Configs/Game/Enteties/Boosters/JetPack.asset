@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: JetPack
   m_EditorClassIdentifier: 
   _boosterType: 2
-  _usingChance: 100
+  _usingChance: 2
   _boostJumpForce: 25
   _boosterTag: JetPack
   _timeOfBoostUse: 10

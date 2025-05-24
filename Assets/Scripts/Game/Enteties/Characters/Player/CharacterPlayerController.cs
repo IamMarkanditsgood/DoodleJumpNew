@@ -97,13 +97,9 @@ public class CharacterPlayerController : MonoBehaviour, IHitable
     {
         if (!IsInLayerMask(collider.gameObject, _playerConfig.BoosterLayers)) return;
 
-        if (IsColliderBelow(collider, _playerConfig.ContactNormalThreshold, gameObject.transform))
-        {
-
-            BasicBoosterController booster = collider.gameObject.GetComponent<BasicBoosterController>();
-            if (booster != null)
-                TryToUseBooster(booster);
-        }
+        BasicBoosterController booster = collider.gameObject.GetComponent<BasicBoosterController>();
+        if (booster != null)
+            TryToUseBooster(booster);
     }
 
     private bool IsInteractableCollision(Collision2D collision)

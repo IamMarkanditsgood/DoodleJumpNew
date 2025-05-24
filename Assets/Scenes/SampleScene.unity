@@ -531,6 +531,21 @@ MonoBehaviour:
       _startSpawnYPos: {fileID: 182194653}
     _enemySpawnManager:
       _enemies: []
+    _allPlatforms:
+    - type: 0
+      difficulty: 0
+    - type: 1
+      difficulty: 75
+    - type: 2
+      difficulty: 50
+    _allEnemies:
+    - type: 0
+      difficulty: 25
+    - type: 1
+      difficulty: 50
+    - type: 2
+      difficulty: 75
+    _difficultyIncreaseRate: 1
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

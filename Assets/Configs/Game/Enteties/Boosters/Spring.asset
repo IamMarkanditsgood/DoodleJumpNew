@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Spring
   m_EditorClassIdentifier: 
   _boosterType: 0
-  _usingChance: 0
+  _usingChance: 75
   _boostJumpForce: 25
   _boosterTag: Spring

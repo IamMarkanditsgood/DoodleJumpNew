@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: Helicopter
   m_EditorClassIdentifier: 
   _boosterType: 1
-  _usingChance: 0
+  _usingChance: 4
   _boostJumpForce: 25
   _boosterTag: Helicopter
   _timeOfBoostUse: 5

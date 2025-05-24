@@ -39,8 +39,6 @@ public class EnemySpawnManager
         {
             BasicEnemyController enemyController = enemy.GetComponent<BasicEnemyController>();
             PoolObjectManager.instant.enemyPoolObjectManager.DisableEnemy(enemyController, enemyController.EnemyType);
-
-            enemiesToRemove.Remove(enemy);
         }
     }
 
