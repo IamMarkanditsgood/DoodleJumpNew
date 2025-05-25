@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public abstract class BasicAmmoController : MonoBehaviour
+public abstract class BasicAmmoController : MonoBehaviour, ICustomisable
 {
     private BasicAmmoConfig _ammoConfig;
 
@@ -15,8 +15,15 @@ public abstract class BasicAmmoController : MonoBehaviour
     {
         _ammoConfig = ammoConfig;
         AmmoType = _ammoConfig.AmmoType;
+        SetCustomisation();
     }
+    public void SetCustomisation()
+    {
+        ICustomizer customizer = GetComponent<ICustomizer>();
 
+        if (customizer != null)
+            customizer.Customize();
+    }
     public virtual void Toggle(bool state)
     {
         _isActive = state;

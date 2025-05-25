@@ -531,21 +531,34 @@ MonoBehaviour:
       _startSpawnYPos: {fileID: 182194653}
     _enemySpawnManager:
       _enemies: []
-    _allPlatforms:
-    - type: 0
-      difficulty: 0
-    - type: 1
-      difficulty: 75
-    - type: 2
-      difficulty: 50
-    _allEnemies:
-    - type: 0
-      difficulty: 25
-    - type: 1
-      difficulty: 50
-    - type: 2
-      difficulty: 75
-    _difficultyIncreaseRate: 1
+    _gameStages:
+    - stageName: one
+      startTime: 0
+      platformsInStage:
+      - type: 0
+        difficulty: 0
+      enemiesInStage:
+      - type: 1
+        difficulty: 10
+      - type: 0
+        difficulty: 0
+      enemySpawnChance: 0
+      boostersSpawnChance: 0.492
+      platformsInRow: {x: 1, y: 5}
+    - stageName: two
+      startTime: 15
+      platformsInStage:
+      - type: 0
+        difficulty: 53
+      - type: 1
+        difficulty: 0
+      enemiesInStage:
+      - type: 0
+        difficulty: 0
+      enemySpawnChance: 0.5
+      boostersSpawnChance: 0
+      platformsInRow: {x: 1, y: 4}
+    _gameTime: 0
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

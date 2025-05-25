@@ -20,7 +20,7 @@ public class KeyboardInputSystem : IInputable
             Input.GetAxis(VERTICAL_AXIS)
         );
 
-        InputEvents.KeyboardMovement(movementDirection.normalized);
+        InputEvents.MovePlayer(movementDirection.normalized);
     }
 
     private void CheckButtonsInput()

@@ -30,10 +30,10 @@ public class PlayerInputSystem
     /// </summary>
     public void UpdateInput()
     {
-        foreach (var system in _inputSystems)
-        {
-            system.CheckInput();
-        }
+        int CurrentInputSystem = SaveManager.PlayerPrefs.LoadInt(GameSaveKeys.InputSystem);
+
+        if(CurrentInputSystem < _inputSystems.Count)
+            _inputSystems[CurrentInputSystem].CheckInput();
     }
 
     /// <summary>
@@ -43,11 +43,11 @@ public class PlayerInputSystem
     {
         _inputSystems.Clear();
 
-#if UNITY_EDITOR || UNITY_STANDALONE
+#if UNITY_EDITOR   
         _inputSystems.Add(new KeyboardInputSystem());
         _inputSystems.Add(new MouseInputSystem());
-#elif UNITY_ANDROID || UNITY_IOS
-        _inputSystems.Add(new TouchInputSystem()); // Пример для будущей реализации
 #endif
+        _inputSystems.Add(new TouchInputSystem());
+        _inputSystems.Add(new AccelerometerInputSystem());
     }
 }

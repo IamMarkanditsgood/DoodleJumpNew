@@ -41,7 +41,7 @@ MonoBehaviour:
   _objectGarbageCollectorInterval: 15
   _objectCleanupDistanceToPlayer: 30
   _spawnIntervalTimer: 0.05
-  _maxRowSpacing: 5
+  _maxRowSpacing: 4.5
   _minRowSpacing: 2
   _minDistanceBetweenPlatformsX: 3
   _maxSpawnHeightAbovePlayer: 150

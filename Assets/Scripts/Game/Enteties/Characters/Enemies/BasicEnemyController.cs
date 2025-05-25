@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public abstract class BasicEnemyController : MonoBehaviour
+public abstract class BasicEnemyController : MonoBehaviour, ICustomisable
 {
     [SerializeField] private EnemyTypes _enemyType;
 
@@ -17,6 +17,7 @@ public abstract class BasicEnemyController : MonoBehaviour
     public virtual void Init(BasicEnemyConfig basicEnemyConfig)
     {
         _basicEnemyConfig = basicEnemyConfig;
+        SetCustomisation();
     }
 
     public virtual void Toggle(bool state)
@@ -84,5 +85,13 @@ public abstract class BasicEnemyController : MonoBehaviour
     {
         Toggle(false);
         PoolObjectManager.instant.enemyPoolObjectManager.DisableEnemy(this, _enemyType);
+    }
+
+    public void SetCustomisation()
+    {
+        ICustomizer customizer = GetComponent<ICustomizer>();
+
+        if (customizer != null)
+            customizer.Customize();
     }
 }

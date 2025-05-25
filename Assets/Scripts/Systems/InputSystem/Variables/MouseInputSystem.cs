@@ -5,7 +5,7 @@
 /// </summary>
 public class MouseInputSystem : IInputable
 {
-    private const float STANDART_MOUSE_SENSITIVITY = 0.1f;
+    private const float STANDART_MOUSE_SENSITIVITY = 1f;
 
     public void CheckInput()
     {
@@ -20,7 +20,7 @@ public class MouseInputSystem : IInputable
             Input.GetAxis("Mouse Y") * STANDART_MOUSE_SENSITIVITY
         );
 
-        InputEvents.MouseMovement(mouseDelta);
+        InputEvents.MovePlayer(mouseDelta);
     }
 
     private void CheckButtons()

@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 4004078073792499046}
   - component: {fileID: 2557823194388419366}
   - component: {fileID: 1032702666577012491}
+  - component: {fileID: 9020563120895996629}
   m_Layer: 0
   m_Name: ShootableEnemy
   m_TagString: Enemy
@@ -137,6 +138,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _enemyType: 2
   _shootingPos: {fileID: 699750554754445159}
+--- !u!114 &9020563120895996629
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1845117741999869657}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b4f292c58448e0543bd22d3851f64e8a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _styles: []
+  _spriteRenderer: {fileID: 4004078073792499046}
 --- !u!1 &4046872772795996633
 GameObject:
   m_ObjectHideFlags: 0

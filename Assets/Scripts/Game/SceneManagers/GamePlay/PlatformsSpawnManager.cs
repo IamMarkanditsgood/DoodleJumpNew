@@ -108,7 +108,7 @@ public class PlatformsSpawnManager
         }
     }
 
-    private bool IsSpawnAvailable()
+    public bool IsSpawnAvailable()
     {
         float playerY = _player.transform.position.y;
         return (_nextSpawnY - playerY) < _gameConfig.MaxSpawnHeightAbovePlayer;

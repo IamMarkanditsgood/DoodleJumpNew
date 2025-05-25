@@ -44,6 +44,14 @@ public class EnemySpawnManager
 
     public void SpawnEnemy(EnemyTypes enemyType, float yPos, float? xPos = null)
     {
+        foreach(var enemy in _enemies)
+        {
+            if (enemy.transform.position.y == yPos)
+            {
+                return;
+            }
+        }
+
         float spawnX = xPos ?? UnityEngine.Random.Range(_minXSpawnPos, _maxXSpawnPos);
         Vector2 spawnPos = new Vector2(spawnX, yPos);
 

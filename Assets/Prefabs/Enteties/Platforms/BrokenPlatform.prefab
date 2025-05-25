@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 3518962780899122564}
   - component: {fileID: 2409822747019769281}
   - component: {fileID: 1877600671314930203}
+  - component: {fileID: 5859488690080268820}
   m_Layer: 0
   m_Name: BrokenPlatform
   m_TagString: Platform
@@ -171,6 +172,20 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 095cea81220782640861aa77ea27edec, type: 2}
   - {fileID: 11400000, guid: e26f037e1869a91438fbdceb15c8b202, type: 2}
   _booster: {fileID: 401673562973838585}
+--- !u!114 &5859488690080268820
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4351005948386676007}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b4f292c58448e0543bd22d3851f64e8a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _styles: []
+  _spriteRenderer: {fileID: 3281199513591239473}
 --- !u!1001 &3894119589949791890
 PrefabInstance:
   m_ObjectHideFlags: 0

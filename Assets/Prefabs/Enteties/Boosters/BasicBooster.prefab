@@ -94,8 +94,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1037421147434224693}
-  - component: {fileID: 3718204008941240939}
   - component: {fileID: 3494481416041418602}
+  - component: {fileID: 3718204008941240939}
   m_Layer: 7
   m_Name: BasicBooster
   m_TagString: Untagged
@@ -119,18 +119,6 @@ Transform:
   - {fileID: 3936343187527683244}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3718204008941240939
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8806492433864042861}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0cd73804218f7534f94f82aa2868b925, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!58 &3494481416041418602
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -166,3 +154,17 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0.0000009536743}
   serializedVersion: 2
   m_Radius: 0.74
+--- !u!114 &3718204008941240939
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8806492433864042861}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0cd73804218f7534f94f82aa2868b925, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _boosterStyles: []
+  _spriteRenderer: {fileID: 5670664615457384739}

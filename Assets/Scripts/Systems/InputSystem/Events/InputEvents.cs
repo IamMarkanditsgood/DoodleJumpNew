@@ -7,11 +7,8 @@ using UnityEngine;
 public static class InputEvents
 {    
     // Movement events
-    public static event Action<Vector2> OnMouseMovement;
-    public static event Action<Vector2> OnKeyBordMovement;
+    public static event Action<Vector2> OnMovePlayer;
 
     // Action events
-
-    public static void MouseMovement(Vector2 movementDirection) => OnMouseMovement?.Invoke(movementDirection);
-    public static void KeyboardMovement(Vector2 movementDirection) => OnKeyBordMovement?.Invoke(movementDirection);
+    public static void MovePlayer(Vector2 direction) => OnMovePlayer?.Invoke(direction); 
 }

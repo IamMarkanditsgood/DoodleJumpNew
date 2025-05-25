@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 9221669056140322766}
   - component: {fileID: 8188747516657018875}
   - component: {fileID: 3847372278445381382}
+  - component: {fileID: 8320130212270348918}
   m_Layer: 0
   m_Name: DefaultEnemy
   m_TagString: Enemy
@@ -135,3 +136,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _enemyType: 0
+--- !u!114 &8320130212270348918
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3449021975981694554}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b4f292c58448e0543bd22d3851f64e8a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _styles: []
+  _spriteRenderer: {fileID: 9221669056140322766}

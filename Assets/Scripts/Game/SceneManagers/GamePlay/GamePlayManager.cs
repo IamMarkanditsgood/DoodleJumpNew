@@ -9,14 +9,13 @@ public class GamePlayManager
 {
     [SerializeField] private PlatformsSpawnManager _platformsSpawnManager;
     [SerializeField] private EnemySpawnManager _enemySpawnManager;
+    [SerializeField] private List<GameStage> _gameStages;
 
-    [SerializeField] private List<PlatformData> _allPlatforms;
-    [SerializeField] private List<EnemyData> _allEnemies;
+    [SerializeField] private float _gameTime = 0f;
 
-    [SerializeField] private float _difficultyIncreaseRate = 1f; // щосекунди або кожні N очок
+    private GameStage _currentStage;
 
-    [SerializeField] private float _currentDifficulty = 0;
-    private float _gameTime = 0f;
+    private bool _canSpawnEnemy = false;
 
     private Camera _mainCamera;
     private GameConfig _gameConfig;
@@ -63,12 +62,8 @@ public class GamePlayManager
     {
         for (int i = 0; i < 5; i++)
         {
-            List<PlatformTypes> platformsInRom = new List<PlatformTypes> { PlatformTypes.broken, PlatformTypes.movable, PlatformTypes.defaultPlatform };
-            _platformsSpawnManager.SpawnPlatforms(platformsInRom, true);
-
-            /*GameObject platform = _platformsSpawnManager.GetPlatformInRow(_platformsSpawnManager.PrewSpawnY);
-            float xPos = platform.transform.position.x;
-            _enemySpawnManager.SpawnEnemy(EnemyTypes.shootableEnemy, _platformsSpawnManager.PrewSpawnY + 1f, xPos);*/
+            List<PlatformTypes> platformsInRom = new List<PlatformTypes> { PlatformTypes.defaultPlatform, PlatformTypes.defaultPlatform, PlatformTypes.defaultPlatform, PlatformTypes.defaultPlatform, PlatformTypes.defaultPlatform };
+            SpawnPatform(platformsInRom);
         }
     }
 
@@ -76,7 +71,7 @@ public class GamePlayManager
     {
         while (true)
         {
-            _gameTime += Time.deltaTime;
+            _gameTime += 1;
             yield return new WaitForSeconds(1);
         }
     }
@@ -85,17 +80,110 @@ public class GamePlayManager
     {
         while (true)
         {
-            /*List<PlatformTypes> platformsInRom = new List<PlatformTypes> { PlatformTypes.broken };
-            _platformsSpawnManager.SpawnPlatforms(platformsInRom);*/
+            _currentStage = GetCurrentStage();
 
+            if (_currentStage != null)
+            {
+                if (_currentStage.platformsInStage.Count > 0)
+                {
+                    List<PlatformTypes> platformsInRow = new List<PlatformTypes>();
 
-            // Підвищуємо складність поступово
-            _currentDifficulty = Mathf.Clamp(_gameTime * _difficultyIncreaseRate, 0, 100);
+                    int countOfPlatforms = (int) UnityEngine.Random.Range(_currentStage.platformsInRow.x, _currentStage.platformsInRow.y);
 
-            SpawnGameplayObjects();
+                    for (int i = 0; i < countOfPlatforms; i++)
+                    {
+                        PlatformData selectedPlatform = GetRandomByDifficulty(_currentStage.platformsInStage, pd => pd.difficulty);
+                        platformsInRow.Add(selectedPlatform.type);
+                    }
+
+                    bool addBooseter = UnityEngine.Random.value < _currentStage.boostersSpawnChance;
+                    SpawnPatform(platformsInRow, addBooseter);
+                }
+
+                if (_currentStage.enemiesInStage.Count > 0)
+                {
+                    EnemyData selectedEnemy = GetRandomByDifficulty(_currentStage.enemiesInStage, ed => ed.difficulty);
+                    SpawnEnemy(selectedEnemy.type);
+                }               
+            }
             yield return new WaitForSeconds(_gameConfig.SpawnIntervalTimer);
         }
     }
+    private GameStage GetCurrentStage()
+    {
+        GameStage result = null;
+        foreach (var stage in _gameStages)
+        {
+            if (_gameTime >= stage.startTime)
+            {
+                result = stage;
+            }
+            else
+            {
+                break;
+            }
+        }
+        return result;
+    }
+
+    private void SpawnPatform(List<PlatformTypes> platformsInRom, bool addBuster = false)
+    { 
+        if(_platformsSpawnManager.IsSpawnAvailable())
+        {
+            _canSpawnEnemy = true;
+            _platformsSpawnManager.SpawnPlatforms(platformsInRom, addBuster);
+        }
+    }
+
+    private void SpawnEnemy(EnemyTypes enemyType)
+    {
+        if (_canSpawnEnemy)
+        {
+            _canSpawnEnemy = false;
+
+            if (UnityEngine.Random.value < _currentStage.enemySpawnChance)
+            {
+                GameObject platform = _platformsSpawnManager.GetPlatformInRow(_platformsSpawnManager.PrewSpawnY);
+                float xPos = platform.transform.position.x;
+
+                _enemySpawnManager.SpawnEnemy(enemyType, _platformsSpawnManager.PrewSpawnY + 1f, xPos);
+            }
+        }
+    }
+
+    private T GetRandomByDifficulty<T>(List<T> items, Func<T, int> difficultySelector)
+    {
+        if (items == null || items.Count == 0)
+        {
+            Debug.LogWarning("GetRandomByDifficulty was called with an empty or null list.");
+            return default;
+        }
+
+        float totalWeight = 0f;
+        List<float> weights = new List<float>();
+
+        foreach (var item in items)
+        {
+            int difficulty = difficultySelector(item);
+            float weight = 1f / Mathf.Max(difficulty, 1); // уникнути ділення на 0
+            weights.Add(weight);
+            totalWeight += weight;
+        }
+
+        float rand = UnityEngine.Random.Range(0, totalWeight);
+        float cumulative = 0f;
+
+        for (int i = 0; i < items.Count; i++)
+        {
+            cumulative += weights[i];
+            if (rand <= cumulative)
+                return items[i];
+        }
+
+        // fallback – тепер без виклику Last()
+        return items[UnityEngine.Random.Range(0, items.Count)];
+    }
+
     private IEnumerator ObjectGarbageCollector()
     {
         while (true)
@@ -105,54 +193,6 @@ public class GamePlayManager
 
             yield return new WaitForSeconds(_gameConfig.ObjectGarbageCollectorInterval);
         }
-    }
-
-    private void SpawnGameplayObjects()
-    {
-        // Вибираємо платформи відповідної складності
-        List<PlatformData> availablePlatforms = _allPlatforms
-            .Where(p => p.difficulty <= _currentDifficulty)
-            .ToList();
-
-        int platformCount = Mathf.RoundToInt(Mathf.Lerp(3, 1, _currentDifficulty / 100f));
-        platformCount = Mathf.Clamp(platformCount, 1, 3);
-
-        List<PlatformTypes> selectedPlatforms = GetRandomPlatforms(availablePlatforms, platformCount);
-
-
-        // 20% шанс додати бустер (залежить від складності)
-        bool addBooster = UnityEngine.Random.value < 0.01f;
-
-        _platformsSpawnManager.SpawnPlatforms(selectedPlatforms, addBooster);
-
-        // Шанс спавнити ворога зростає зі складністю
-        float enemySpawnChance = Mathf.Lerp(0.01f, 0.7f, _currentDifficulty / 100f);
-        if (UnityEngine.Random.value < enemySpawnChance)
-        {
-            List<EnemyData> availableEnemies = _allEnemies
-                .Where(e => e.difficulty <= _currentDifficulty)
-                .ToList();
-
-            if (availableEnemies.Count > 0)
-            {
-                EnemyData selectedEnemy = availableEnemies[UnityEngine.Random.Range(0, availableEnemies.Count)];
-
-                GameObject platform = _platformsSpawnManager.GetPlatformInRow(_platformsSpawnManager.PrewSpawnY);
-                float xPos = platform.transform.position.x;
-
-                _enemySpawnManager.SpawnEnemy(selectedEnemy.type, _platformsSpawnManager.PrewSpawnY + 1f, xPos);
-            }
-        }
-    }
-
-    private List<PlatformTypes> GetRandomPlatforms(List<PlatformData> source, int count)
-    {
-        List<PlatformTypes> result = new List<PlatformTypes>();
-        for (int i = 0; i < count; i++)
-        {
-            result.Add(source[UnityEngine.Random.Range(0, source.Count)].type);
-        }
-        return result;
     }
 }
 [System.Serializable]
@@ -166,4 +206,15 @@ public class PlatformData
 {
     public PlatformTypes type;
     [Range(0, 100)] public int difficulty;
+}
+[Serializable]
+public class GameStage
+{
+    public string stageName;
+    public int startTime; // in Seconds
+    public List<PlatformData> platformsInStage;
+    public List<EnemyData> enemiesInStage;
+    [Range (0, 1)]public float enemySpawnChance;
+    [Range(0, 1)] public float boostersSpawnChance;
+    public Vector2 platformsInRow;
 }
